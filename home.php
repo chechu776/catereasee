@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 // Database connection
 $dbconnect = mysqli_connect("localhost", "root", "", "caterease");
 
@@ -6,11 +8,14 @@ if (!$dbconnect) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Fetch CSP data, including the category and location
+// Check if csp_id is available in the session
+$csp_id = isset($_SESSION['csp_id']) ? $_SESSION['csp_id'] : null;
+
+// Fetch CSP data
 $csp_query = "SELECT * FROM csp_table";
 $csp_result = mysqli_query($dbconnect, $csp_query);
-?>
 
+?>
 
 
 <!DOCTYPE html>
@@ -119,28 +124,37 @@ $csp_result = mysqli_query($dbconnect, $csp_query);
     </script>
 </head>
 <body>
-    <header>
-        <section class="wrapper">
-            <div class="left">
-                <a href="home.php">CaterEase</a>
+<header>
+    <section class="wrapper">
+        <div class="left">
+            <a href="home.php">CaterEase</a>
+        </div>
+        <div class="right">
+            <div>
+                <a href="home.php"><img src="./images/home-icon-silhouette (1).png" alt=""> Home</a>
             </div>
-            <div class="right">
-                <div>
-                <a href="home.php"><img src="./images/home-icon-silhouette (1).png" alt="">  Home</a>
-                </div>
-                <div>
-                    <a href="#about"><img src="./images/info.png" alt="">  About</a>
-                </div>
-                <div>
-                <a href="#book"><img src="./images/booking.png" alt="">  Booking</a>
-                </div>
-                <div>
-                <a href="#footer"> <img src="./images/customer-service.png" alt="">  Contact</a>
-                </div>
-                <a href="homeintex.php" class="button">Log Out</a>
+            <div>
+                <a href="#about"><img src="./images/info.png" alt=""> About</a>
             </div>
-        </section>
-    </header>
+            <div>
+                <a href="#book"><img src="./images/booking.png" alt=""> Booking</a>
+            </div>
+            <div>
+                <a href="#footer"><img src="./images/customer-service.png" alt=""> Contact</a>
+            </div>
+            <div>
+                <?php if (isset($_SESSION['username'])): ?>
+                    <span style="color:white;font-weight:700"><?php echo htmlspecialchars($_SESSION['username']); ?>!!!</span>
+                <?php else: ?>
+                    <span>Guest!</span>
+                <?php endif; ?>
+            </div>
+            <a href="homeintex.php" class="button">Log Out</a>
+        </div>
+    </section>
+</header>
+
+
     <section id="home">
         <div class="topic">
            <h1>Looking for Catering Service for your Events <br>?</h1>

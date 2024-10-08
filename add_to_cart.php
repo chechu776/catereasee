@@ -1,43 +1,46 @@
 <?php
+// Start session
+session_start();
+
+// Check if the user is logged in (This line can be updated or removed based on how you want to handle logged-in users)
+// if (!isset($_SESSION['logged_in'])) { // If you only need a general logged-in check
+//     die("You need to log in to add items to your cart.");
+// }
+
 // Connect to the database
-session_start(); // Start the session
 $dbconnect = mysqli_connect("localhost", "root", "", "caterease");
 
 if (!$dbconnect) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Check if menu_id and csp_id are set
-if (isset($_POST['menu_id']) && isset($_POST['csp_id'])) {
+// Check if menu_id and quantity are set
+if (isset($_POST['menu_id']) && isset($_POST['quantity'])) {
     $menu_id = $_POST['menu_id'];
-    $csp_id = $_POST['csp_id'];
     $quantity = $_POST['quantity'];
 
-    // Initialize the cart in the session if it doesn't exist
+    // Add to session cart
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
 
-    // Check if the item already exists in the cart
-    if (isset($_SESSION['cart'][$menu_id])) {
-        // Update the quantity
-        $_SESSION['cart'][$menu_id]['quantity'] += $quantity;
-    } else {
-        // Add new item to the cart
-        $_SESSION['cart'][$menu_id] = [
-            'quantity' => $quantity,
-            'csp_id' => $csp_id
-        ];
-    }
+    // Add menu_id and quantity to the session cart
+    $_SESSION['cart'][$menu_id] = [
+        'quantity' => $quantity,
+    ];
 
-    // Redirect to view_cart.php
+    // Optionally, you can store the cart items in the database without user ID
+    $query = "INSERT INTO cart (menu_id, quantity) VALUES ('$menu_id', '$quantity')";
+    mysqli_query($dbconnect, $query);
+
+    // Redirect to the cart page
     header("Location: view_cart.php");
     exit();
 } else {
-    die("Menu ID or Catering Service Provider ID is missing.");
+    die("Menu ID or Quantity is missing.");
 }
 
-// Close database connection
+// Close the database connection
 mysqli_close($dbconnect);
 ?>
 

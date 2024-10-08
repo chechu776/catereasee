@@ -30,8 +30,8 @@ if (isset($_POST['submit'])) {
             }
             if ($type === 'CSP') {
                 $csp_name = mysqli_real_escape_string($dbcon, $_POST['csp_name']);
-                $address = mysqli_real_escape_string($dbcon, $_POST['address']);
-                $sql3 = "INSERT INTO `csp_table`(userid, `csp_name`, `address`) 
+                $address = mysqli_real_escape_string($dbcon, $_POST['location']);
+                $sql3 = "INSERT INTO `csp_table`(userid, `csp_name`, `location`) 
                          VALUES ('$user_id', '$csp_name', '$address')";
                 if (!mysqli_query($dbcon, $sql3)) {
                     echo "<script>alert('Error inserting into csp_table: " . mysqli_error($dbcon) . "');</script>";
@@ -47,6 +47,7 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,14 +60,12 @@ if (isset($_POST['submit'])) {
             border: 1px solid #008080;
             border-radius: 20px;
             padding: 8px 20px;
-            justify-content: center;
-            display: flex;
             color: white;
-            text-decoration: none;
-            margin-top: 10px !important;
-            margin-bottom: 30px;
             background-color: #008080;
+            width: 100%;
+            cursor: pointer;
         }
+
         .btn2:hover {
             background-color: white;
             color: #009879;
@@ -74,10 +73,7 @@ if (isset($_POST['submit'])) {
             transition: all 0.2s linear;
             font-weight: 700;
         }
-        .error {
-            color: red;
-            font-size: 0.9em;
-        }
+
         .csp-fields {
             display: none; /* Hidden by default */
         }
@@ -130,11 +126,7 @@ if (isset($_POST['submit'])) {
         function toggleCspFields() {
             const userType = document.forms["signupForm"]["typ"].value;
             const cspFields = document.getElementById("cspFields");
-            if (userType === "CSP") {
-                cspFields.style.display = "block"; // Show CSP fields
-            } else {
-                cspFields.style.display = "none"; // Hide CSP fields
-            }
+            cspFields.style.display = userType === "CSP" ? "block" : "none"; // Show or hide CSP fields
         }
     </script>
 </head>
@@ -151,7 +143,7 @@ if (isset($_POST['submit'])) {
             <div class="head">
                 <a href="login.php"><img src="images/back.png" alt=""></a>
                 <h1>Sign Up</h1>
-                <p></p>
+                <P></P>
             </div>
             <hr>
             <form name="signupForm" action="signup.php" method="post" onsubmit="return validateForm()">
@@ -168,20 +160,20 @@ if (isset($_POST['submit'])) {
                         <option value="CSP">Catering service provider</option>
                     </select>
                     <div id="cspFields" class="csp-fields">
-                        <input type="text" name="csp_name" placeholder="CSP Name" required>
+                        <input type="text" name="csp_name" placeholder="CSP Name" >
                         <hr>
-                        <input type="text" name="address" placeholder="Address" required>
+                        <input type="text" name="address" placeholder="Address" >
                         <hr>
                     </div>
-                    <input type="password" name="pswd" class="p" placeholder="Password" required>
+                    <input type="password" name="pswd" placeholder="Password" required>
                     <hr>
                     <input type="password" name="pswd1" placeholder="Confirm password" required>
                     <hr>
                     <br>
-                    <input class="btn2" type="submit" name="submit" value="Sign Up">
+                    <button type="submit" name="submit" class="btn2">Sign Up</button>
                     <p>Already have an account? <a href="login.php">Log In</a></p>
                 </div>
-            </form> 
+            </form>
         </div>
     </section>
 </body>

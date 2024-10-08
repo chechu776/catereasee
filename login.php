@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 $dbcon = mysqli_connect("localhost", "root", "", "caterease");
 if (!$dbcon) {
     die("Connection failed: " . mysqli_connect_error());
@@ -13,22 +15,28 @@ if (isset($_POST['submit'])) {
     
     $sql2 = "SELECT * FROM user WHERE email='$email'";
     $data2 = mysqli_query($dbcon, $sql2);
+    
     if ($data && $data2) {
         if (mysqli_num_rows($data) > 0 && mysqli_num_rows($data2) > 0) {
             $row = mysqli_fetch_assoc($data);
             $row1 = mysqli_fetch_assoc($data2);
             if ($row1['status'] === 'active') {
-                if ($row['user_type'] == 'User') {
-                    header('Location: home.html');
+                // Store user ID and name in session
+                $_SESSION['userid'] = $row1['userid'];
+                // Store the user's name
+
+                if ($row1['usertype'] == 'User') {
+                    header('Location: home.php?id=' . $row1['userid']);
+                    $_SESSION['username'] = $row1['name']; 
                     exit();
-                } elseif ($row['user_type'] == 'CSP') {
-                    $sql3 = "SELECT * FROM csp_table where userid=$row1[userid]";
-                    $data3 =mysqli_query($dbcon,$sql3);
+                } elseif ($row1['usertype'] == 'CSP') {
+                    $sql3 = "SELECT * FROM csp_table where userid=" . $row1['userid'];
+                    $data3 = mysqli_query($dbcon, $sql3);
                     $row2 = mysqli_fetch_assoc($data3);
                     $_SESSION['cspid'] = $row2['csp_id'];
-                    header("Location: cspdashboard.php?id=".$row2["csp_id"]."");
+                    header("Location: cspdashboard.php?id=" . $row2["csp_id"]);
                     exit();
-                } else {
+                } else{
                     header('Location: admindashboard.php');
                     exit();
                 }
@@ -42,7 +50,9 @@ if (isset($_POST['submit'])) {
         echo "<script>alert('Incorrect email or password');</script>";
     }
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
