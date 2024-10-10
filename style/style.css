@@ -480,15 +480,6 @@ div.maincontent div.wrapper div.info div.searchbox img:hover{
     transform: scale(1.2);
 }
 /* stytling viewbooking */
-div.vuser table tr td p.con{
-    color: rgb(0, 255, 0);
-}
-div.vuser table tr td p.pend{
-    color: rgb(255, 200, 0);
-}
-div.vuser table tr td p.rej{
-    color: rgb(255, 0, 0);
-}
 /* stytling viewfeedback */
 body.feedback{
     color: #009879;
@@ -852,7 +843,7 @@ div.vuser1{
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    height:514px;
+    height:589px;
     /* background: url(/images/bg1.jpg);
     background-size: cover;    */
 }
@@ -927,7 +918,9 @@ div.vuser1 table tr form button.remove{
     font-weight: 700;
 }
 div.vuser1 table tr form button.remove:hover{
-    background-color: red;
+    background-color: rgb(255, 0, 0);
+    color: white;
+
 }
 div.vuser1 table tr td button.unblock{
     color: #009879;
@@ -947,7 +940,7 @@ div.vuser1 table tr td a{
     text-align: center;
 }
 div.proceed{
-    width: 310px;
+    width: 500px;
     display: flex;
     justify-content: space-between;
     align-items: center;

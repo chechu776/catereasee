@@ -257,7 +257,7 @@ a:hover {
             </div>
             <ul class="menu">
             <li>
-                <a href="viewbooking.html">
+                <a href="managebooking.php">
                     <img src="images/booking.png" alt="">
                     <span>View Bookings</span>
                 </a>

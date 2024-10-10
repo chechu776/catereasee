@@ -31,12 +31,22 @@ if (isset($_POST['submit'])) {
                     $_SESSION['username'] = $row1['name']; 
                     exit();
                 } elseif ($row1['usertype'] == 'CSP') {
-                    $sql3 = "SELECT * FROM csp_table where userid=" . $row1['userid'];
+                    // Check CSP approval status
+                    $sql3 = "SELECT * FROM csp_table WHERE userid=" . $row1['userid'];
                     $data3 = mysqli_query($dbcon, $sql3);
-                    $row2 = mysqli_fetch_assoc($data3);
-                    $_SESSION['cspid'] = $row2['csp_id'];
-                    header("Location: cspdashboard.php?id=" . $row2["csp_id"]);
-                    exit();
+                    
+                    if ($data3) {
+                        $row2 = mysqli_fetch_assoc($data3);
+                        if ($row2['status'] === 'approved') {
+                            $_SESSION['cspid'] = $row2['csp_id'];
+                            header("Location: cspdashboard.php?id=" . $row2["csp_id"]);
+                            exit();
+                        } else {
+                            echo "<script>alert('Your account is not approved yet. Please contact the admin.');</script>";
+                        }
+                    } else {
+                        echo "<script>alert('Error fetching CSP details.');</script>";
+                    }
                 } else{
                     header('Location: admindashboard.php');
                     exit();

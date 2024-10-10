@@ -137,7 +137,7 @@ $csp_result = mysqli_query($dbconnect, $csp_query);
                 <a href="#about"><img src="./images/info.png" alt=""> About</a>
             </div>
             <div>
-                <a href="#book"><img src="./images/booking.png" alt=""> Booking</a>
+                <a href="userbooking.php"><img src="./images/booking.png" alt=""> Booking</a>
             </div>
             <div>
                 <a href="#footer"><img src="./images/customer-service.png" alt=""> Contact</a>

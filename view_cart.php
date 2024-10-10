@@ -110,15 +110,17 @@ mysqli_close($dbconnect);
                     </tr>
                 <?php endforeach; ?>
             </table>
+            <div class="proceed">
+                <a href="menu.php?csp_id=<?php echo htmlspecialchars($csp_id); ?>">Add More Items</a>
+                <a href="booking.php?csp_id=<?php echo htmlspecialchars($csp_id); ?>&total_price=<?php echo htmlspecialchars($total_price); ?>" class="button">Proceed to Booking</a>
+                <h2>Total Price: ₹<?php echo htmlspecialchars($total_price); ?></h2>
+            </div>
         </div>
         
-        <h2>Total Price: ₹<?php echo htmlspecialchars($total_price); ?></h2>
+       
     <?php endif; ?>
     
-    <div class="proceed">
-        <a href="menu.php?csp_id=<?php echo htmlspecialchars($csp_id); ?>">Add More Items</a>
-        <a href="booking.php" class="button">Proceed to Booking</a>
-    </div>
+    
     
     <footer id="footer">
         <div class="foot">

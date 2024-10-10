@@ -1,9 +1,27 @@
+<?php
+session_start();
+$dbconnect = mysqli_connect("localhost", "root", "", "caterease");
+
+if (!$dbconnect) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+if (!isset($_SESSION['userid'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Fetch bookings for the admin
+$booking_query = "SELECT * FROM bookings";
+$booking_result = mysqli_query($dbconnect, $booking_query);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>View Bookings</title>
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body class="adm">
@@ -11,7 +29,7 @@
         <div class="logo">
         </div>
         <ul class="menu">
-            <li class="active">
+            <li>
                 <a href="admindashboard.php">
                     <img src="images/user.png" alt="">
                     <span>Manage User</span>
@@ -23,7 +41,7 @@
                     <span>Manage CSP</span>
                 </a>
             </li>
-            <li>
+            <li class="active">
                 <a href="viewbooking.php">
                     <img src="images/booking.png" alt="">
                     <span>View Bookings</span>
@@ -38,7 +56,7 @@
             <li class="logout">
                 <a href="login.php">
                     <img src="images/logout.png" alt="">
-                    <span>logout</span>
+                    <span>Logout</span>
                 </a>
             </li>
         </ul>
@@ -49,10 +67,6 @@
                 <h1>Admin Dashboard</h1>
             </div>
             <div class="info">
-                <!-- <div class="searchbox">
-                    <img src="images/search-interface-symbol.png" alt="">
-                    <input type="text" placeholder="Search" />
-                </div> -->
                 <img src="images/guest-user-250x250.jpg" alt="">
             </div>
         </div>
@@ -68,71 +82,41 @@
                     <th>Date</th>
                     <th>Venue</th>
                     <th>Amount</th>
+                    <th>Quantity</th> <!-- Added Quantity Header -->
                     <th>Status</th>
                 </tr>
-                <tr class="hover">
-                    <td>1</td>
-                    <td>Shamsu</td>
-                    <td>Rahmania</td>
-                    <td>01/03/2025</td>
-                    <td>Sample venue</td>
-                    <td>50000</td>
-                    <td><p class="con">Confirmed</p> <p class="pend">Pending</p> <p class="rej">Rejected</p></td>
-                </tr>
-                <tr class="hover">
-                    <td>2</td>
-                    <td>Althaf</td>
-                    <td>B 4 Biriyani</td>
-                    <td>10/10/2024</td>
-                    <td>Sample venue</td>
-                    <td>20000</td>
-                    <td><p class="con">Confirmed</p> <p class="pend">Pending</p> <p class="rej">Rejected</p></td>
-                </tr>
-                    <tr class="hover">
-                        <td>2</td>
-                        <td>Althaf</td>
-                        <td>B 4 Biriyani</td>
-                        <td>10/10/2024</td>
-                        <td>Sample venue</td>
-                        <td>20000</td>
-                        <td><p class="con">Confirmed</p> <p class="pend">Pending</p> <p class="rej">Rejected</p></td>
-                    </tr>
-                    <tr class="hover">
-                        <td>2</td>
-                        <td>Althaf</td>
-                        <td>B 4 Biriyani</td>
-                        <td>10/10/2024</td>
-                        <td>Sample venue</td>
-                        <td>20000</td>
-                        <td><p class="con">Confirmed</p> <p class="pend">Pending</p> <p class="rej">Rejected</p></td>
-                    </tr>
-                    <tr class="hover">
-                        <td>2</td>
-                        <td>Althaf</td>
-                        <td>B 4 Biriyani</td>
-                        <td>10/10/2024</td>
-                        <td>Sample venue</td>
-                        <td>20000</td>
-                        <td><p class="con">Confirmed</p> <p class="pend">Pending</p> <p class="rej">Rejected</p></td>
-                    </tr>
-                    <tr class="hover">
-                        <td>2</td>
-                        <td>Althaf</td>
-                        <td>B 4 Biriyani</td>
-                        <td>10/10/2024</td>
-                        <td>Sample venue</td>
-                        <td>20000</td>
-                        <td><p class="con">Confirmed</p> <p class="pend">Pending</p> <p class="rej">Rejected</p></td>
-                    </tr>
-                    <tr class="hover">
-                        <td>2</td>
-                        <td>Althaf</td>
-                        <td>B 4 Biriyani</td>
-                        <td>10/10/2024</td>
-                        <td>Sample venue</td>
-                        <td>20000</td>
-                        <td><p class="con">Confirmed</p> <p class="pend">Pending</p> <p class="rej">Rejected</p></td>
-                    </tr>
+                <?php
+                if (mysqli_num_rows($booking_result) > 0) {
+                    while ($booking_data = mysqli_fetch_assoc($booking_result)) {
+                        // Fetch user name for the current booking
+                        $user_id = $booking_data['user_id']; // Get the user ID from booking data
+                        $user_query = "SELECT name FROM user WHERE userid='$user_id'";
+                        $user_result = mysqli_query($dbconnect, $user_query);
+                        $user_data = mysqli_fetch_assoc($user_result);
+                        $username = htmlspecialchars($user_data['name']); // Get username
+
+                        // Fetch CSP name for the current booking
+                        $csp_id = $booking_data['csp_id']; // Get the CSP ID from booking data
+                        $csp_query = "SELECT csp_name FROM csp_table WHERE csp_id='$csp_id'";
+                        $csp_result = mysqli_query($dbconnect, $csp_query);
+                        $csp_data = mysqli_fetch_assoc($csp_result);
+                        $csp_name = htmlspecialchars($csp_data['csp_name']); // Get CSP name
+
+                        echo "<tr class='hover'>";
+                        echo "<td>" . htmlspecialchars($booking_data['booking_id']) . "</td>";
+                        echo "<td>" . $username . "</td>";
+                        echo "<td>" . $csp_name . "</td>";
+                        echo "<td>" . htmlspecialchars($booking_data['event_date']) . "</td>";
+                        echo "<td>" . htmlspecialchars($booking_data['venue']) . "</td>";
+                        echo "<td>₹" . htmlspecialchars($booking_data['total_price']) . "</td>";
+                        echo "<td>" . htmlspecialchars($booking_data['quantity']) . "</td>"; // Display quantity
+                        echo "<td>" . htmlspecialchars($booking_data['status']) . "</td>"; // Directly display the status
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='8'>No bookings found.</td></tr>"; // Adjusted colspan
+                }
+                ?>
             </table>
         </div>
     </div>

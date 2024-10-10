@@ -95,6 +95,7 @@ $booking_result = mysqli_query($dbconnect, $booking_query);
                     <th>Date</th>
                     <th>Venue</th>
                     <th>Amount</th>
+                    <th>Quantity</th> <!-- Added quantity header -->
                     <th>Status</th>
                 </tr>
                 <?php
@@ -113,17 +114,8 @@ $booking_result = mysqli_query($dbconnect, $booking_query);
                         echo "<td>" . htmlspecialchars($booking_data['event_date']) . "</td>";
                         echo "<td>" . htmlspecialchars($booking_data['venue']) . "</td>";
                         echo "<td>₹" . htmlspecialchars($booking_data['total_price']) . "</td>";
-                        echo "<td>
-                                <p class='con'>" . htmlspecialchars($booking_data['status']) . "</p>
-                                <form method='POST' action='update_status.php'>
-                                    <input type='hidden' name='booking_id' value='" . htmlspecialchars($booking_data['booking_id']) . "'>
-                                    <select name='status' onchange='this.form.submit()'>
-                                        <option value='confirmed' " . ($booking_data['status'] == 'confirmed' ? 'selected' : '') . ">Confirmed</option>
-                                        <option value='pending' " . ($booking_data['status'] == 'pending' ? 'selected' : '') . ">Pending</option>
-                                        <option value='rejected' " . ($booking_data['status'] == 'rejected' ? 'selected' : '') . ">Rejected</option>
-                                    </select>
-                                </form>
-                            </td>";
+                        echo "<td>" . htmlspecialchars($booking_data['quantity']) . "</td>"; 
+                        echo "<td><p>" . htmlspecialchars($booking_data['status']) . "</p></td>"; // Display status
                         echo "</tr>";
                     }
                 } else {
