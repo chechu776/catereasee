@@ -143,6 +143,9 @@ $csp_result = mysqli_query($dbconnect, $csp_query);
                 <a href="#footer"><img src="./images/customer-service.png" alt=""> Contact</a>
             </div>
             <div>
+                <a href="feedback.php"><img src="./images/feedback.png" alt=""> Feedback</a>
+            </div>
+            <div>
                 <?php if (isset($_SESSION['username'])): ?>
                     <span style="color:white;font-weight:700"><?php echo htmlspecialchars($_SESSION['username']); ?>!!!</span>
                 <?php else: ?>
@@ -168,7 +171,6 @@ $csp_result = mysqli_query($dbconnect, $csp_query);
                 <option value="All">All</option>
                 <option value="Veg">Veg</option>
                 <option value="Non-Veg">Non-Veg</option>
-                <option value="Both">Veg & Non-Veg</option>
             </select>
         </div>
     </section>

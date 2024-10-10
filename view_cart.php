@@ -66,52 +66,59 @@ mysqli_close($dbconnect);
         </section>
     </header>
     
-    <h1>Your Cart</h1>
-    
     <!-- Display any messages (optional) -->
     <?php if (isset($_SESSION['cart_message'])): ?>
-        <p><?php echo htmlspecialchars($_SESSION['cart_message']); ?></p>
+        <script>
+            alert('<?php echo addslashes($_SESSION['cart_message']); ?>');
+        </script>
         <?php unset($_SESSION['cart_message']); // Clear the message after displaying ?>
     <?php endif; ?>
     
+    <!-- If cart is empty, show alert using JavaScript -->
     <?php if (empty($cart_items)): ?>
+        <script>
+            alert("Your cart is empty. Please add items to your cart.");
+        </script>
         <p>Your cart is empty. Please add items to your cart.</p>
     <?php else: ?>
-        <table>
-            <tr>
-                <th>Menu Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Edit</th>
-            </tr>
-            <?php foreach ($cart_items as $menu_id => $cart_item): ?>
+        <div class="vuser1">
+            <h1>Your Cart</h1>
+            <table>
                 <tr>
-                    <td><?php echo htmlspecialchars($cart_item['menu_name']); ?></td>
-                    <td>₹<?php echo htmlspecialchars($cart_item['price']); ?></td>
-                    <td>
-                    <form action="update_cart.php" method="post">
-                        <input type="hidden" name="menu_id" value="<?php echo $menu_id; ?>">
-                        <input type="number" name="quantity" value="<?php echo $cart_item['quantity']; ?>" min="1" required>
-                        <button type="submit">Update</button>
-                    </form>
-
-                    </td>
-                    <td>
-                        <form action="remove_from_cart.php" method="post">
-                            <input type="hidden" name="menu_id" value="<?php echo $menu_id; ?>">
-                            <button type="submit">Remove</button>
-                        </form>
-                    </td>
+                    <th>Menu Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Edit</th>
                 </tr>
-            <?php endforeach; ?>
-        </table>
+                <?php foreach ($cart_items as $menu_id => $cart_item): ?>
+                    <tr class="hover">
+                        <td><?php echo htmlspecialchars($cart_item['menu_name']); ?></td>
+                        <td>₹<?php echo htmlspecialchars($cart_item['price']); ?></td>
+                        <td>
+                            <form action="update_cart.php" method="post" style="display:flex;justify-content:space-around;">
+                                <input type="hidden" name="menu_id" value="<?php echo $menu_id; ?>">
+                                <input type="number" name="quantity" value="<?php echo $cart_item['quantity']; ?>" min="1" required style="width:40px;">
+                                <button type="submit" class="update">Update</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="remove_from_cart.php" method="post">
+                                <input type="hidden" name="menu_id" value="<?php echo $menu_id; ?>">
+                                <button type="submit" class="remove">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
         
         <h2>Total Price: ₹<?php echo htmlspecialchars($total_price); ?></h2>
     <?php endif; ?>
     
-    <a href="menu.php?csp_id=<?php echo htmlspecialchars($csp_id); ?>">Add More Items</a>
-    <br>
-    <a href="booking.php" class="button">Proceed to Booking</a>
+    <div class="proceed">
+        <a href="menu.php?csp_id=<?php echo htmlspecialchars($csp_id); ?>">Add More Items</a>
+        <a href="booking.php" class="button">Proceed to Booking</a>
+    </div>
     
     <footer id="footer">
         <div class="foot">
@@ -123,4 +130,4 @@ mysqli_close($dbconnect);
         </div>
     </footer>
 </body>
-</html>  
+</html>

@@ -15,14 +15,15 @@ if (isset($_POST['menu_id'])) {
         // Remove the item from the cart
         unset($_SESSION['cart'][$menu_id]);
 
-        // Optionally: Set a success message
-        $_SESSION['cart_message'] = "Item removed from cart successfully!";
+        // Set a success message with a JavaScript alert
+        $_SESSION['cart_message'] = "<script>alert('Item removed from cart successfully!');</script>";
     } else {
-        // Set an error message if the item wasn't found
-        $_SESSION['cart_message'] = "Item not found in the cart.";
+        // Set an error message with a JavaScript alert if the item wasn't found
+        $_SESSION['cart_message'] = "<script>alert('Item not found in the cart.');</script>";
     }
 } else {
-    $_SESSION['cart_message'] = "Menu ID is missing.";
+    // Set an error message if the menu_id is missing
+    $_SESSION['cart_message'] = "<script>alert('Menu ID is missing.');</script>";
 }
 
 // Redirect back to the cart view

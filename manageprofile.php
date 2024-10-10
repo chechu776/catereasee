@@ -44,6 +44,18 @@ if (isset($_POST['set_category']) || isset($_POST['edit_category'])) {
         echo "<script>alert('Failed to update category.');</script>";
     }
 }
+// Handle location update
+if (isset($_POST['update_location'])) {
+    $location = mysqli_real_escape_string($dbconnect, $_POST['csp_location']);
+    $update_location_query = "UPDATE csp_table SET location='$location' WHERE csp_id='$csp_id'";
+
+    if (mysqli_query($dbconnect, $update_location_query)) {
+        echo "<script>alert('Location updated successfully!');</script>";
+    } else {
+        echo "<script>alert('Failed to update location.');</script>";
+    }
+}
+
 ?>
 <?php
 // ... (rest of your existing code)
@@ -322,6 +334,15 @@ a:hover {
             <?php endif; ?>
         </form>
     </div>
+    <!-- Location Section -->
+    <div class="location-section">
+        <h2>Update Your Location</h2>
+        <form action="" method="POST">
+            <input type="text" name="csp_location" value="<?php echo htmlspecialchars($csp_data['location']); ?>" required placeholder="Enter Your Location">
+            <button type="submit" name="update_location">Update Location</button>
+        </form>
+    </div>
+
         <div class="menu-section">
             <h2>Your Menus</h2>
             <a href="uploadmenu.php">Add New Menu</a>

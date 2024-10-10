@@ -25,12 +25,15 @@ if (!empty($menu_id) && is_numeric($quantity) && $quantity > 0) {
 
     // Check for errors
     if ($result) {
-        $_SESSION['cart_message'] = "Cart updated successfully.";
+        // Set a session message and show an alert box using JavaScript
+        $_SESSION['cart_message'] = "<script>alert('Cart updated successfully.');</script>";
     } else {
-        $_SESSION['cart_message'] = "Error updating cart: " . mysqli_error($dbconnect);
+        // Set an error message and show an alert box using JavaScript
+        $_SESSION['cart_message'] = "<script>alert('Error updating cart: " . addslashes(mysqli_error($dbconnect)) . "');</script>";
     }
 } else {
-    $_SESSION['cart_message'] = "Invalid menu ID or quantity.";
+    // Set an error message for invalid input and show an alert
+    $_SESSION['cart_message'] = "<script>alert('Invalid menu ID or quantity.');</script>";
 }
 
 // Close database connection

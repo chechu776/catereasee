@@ -5,7 +5,15 @@ $dbconnect = mysqli_connect("localhost", "root", "", "caterease");
 if (!$dbconnect) {
     die("Connection failed: " . mysqli_connect_error());
 }
-$csp_id = $_GET['csp_id'];
+session_start();
+
+if (isset($_GET['csp_id'])) {
+    $_SESSION['csp_id'] = $_GET['csp_id'];
+}
+
+// Now use it in the rest of your code
+$csp_id = $_SESSION['csp_id'];
+
 // Fetch all menu items from different catering service providers
 $query = "SELECT * FROM `menu` WHERE csp_id = '$csp_id'";
 $result = mysqli_query($dbconnect, $query);
@@ -55,7 +63,7 @@ $result = mysqli_query($dbconnect, $query);
                     <span class="price">₹<?php echo $menu_item['price']; ?>/person</span>
                     <form action="add_to_cart.php" method="post">
                         <input type="hidden" name="menu_id" value="<?php echo $menu_item['menu_id']; ?>">
-                        <input type="hidden" name="csp_id" value="<?php echo $csp_id; ?>"> <!-- Include CSP ID -->
+                        <input type="hidden" name="csp_id" value="<?php echo $row['csp_id']; ?>"> <!-- Include CSP ID -->
                         <input type="number" name="quantity" min="1" value="1" required>
                         <button type="submit" class="add-to-cart">Order Now</button>
                     </form>

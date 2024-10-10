@@ -6,6 +6,7 @@ session_start();
 // if (!isset($_SESSION['logged_in'])) { // If you only need a general logged-in check
 //     die("You need to log in to add items to your cart.");
 // }
+$csp_id = isset($_SESSION['csp_id']) ? $_SESSION['csp_id'] : null;
 
 // Connect to the database
 $dbconnect = mysqli_connect("localhost", "root", "", "caterease");
@@ -30,7 +31,7 @@ if (isset($_POST['menu_id']) && isset($_POST['quantity'])) {
     ];
 
     // Optionally, you can store the cart items in the database without user ID
-    $query = "INSERT INTO cart (menu_id, quantity) VALUES ('$menu_id', '$quantity')";
+    $query = "INSERT INTO cart (menu_id, quantity,csp_id) VALUES ('$menu_id', '$quantity','$csp_id')";
     mysqli_query($dbconnect, $query);
 
     // Redirect to the cart page

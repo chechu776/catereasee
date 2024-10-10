@@ -85,7 +85,7 @@
                                 echo "<td>" . htmlspecialchars($row2['csp_name']) . "</td>"; 
                                 echo "<td>" . htmlspecialchars($row['phno']) . "</td>"; 
                                 echo "<td>" . htmlspecialchars($row['email']) . "</td>"; 
-                                echo "<td>" . htmlspecialchars($row2['address']) . "</td>"; 
+                                echo "<td>" . htmlspecialchars($row2['location']) . "</td>"; 
                                 echo "<td>";
                                 
                                 if ($row['status'] == "active") {
@@ -131,6 +131,7 @@
         {
             $sql="UPDATE csp_table SET status=1 WHERE userid='$id'";
             $result1 = mysqli_query($dbcon, $sql);
+            header("Location: managecsp.php");
         }
     ?>
 </body>

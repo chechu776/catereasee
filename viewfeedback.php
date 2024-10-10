@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+// Connect to the database
+$dbconnect = mysqli_connect("localhost", "root", "", "caterease");
+
+if (!$dbconnect) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Query to retrieve feedback from the database
+$role = $_SESSION['usertype'];
+$query = "SELECT name, message, role, created_at FROM feedback ORDER BY created_at DESC";
+$result = mysqli_query($dbconnect, $query);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +54,7 @@
             <li class="logout">
                 <a href="login.png">
                     <img src="images/logout.png" alt="">
-                    <span>logout</span>
+                    <span>Logout</span>
                 </a>
             </li>
         </ul>
@@ -49,39 +65,30 @@
                 <h1>Admin Dashboard</h1>
             </div>
             <div class="info">
-                <!-- <div class="searchbox">
-                    <img src="images/search-interface-symbol.png" alt="">
-                    <input type="text" placeholder="Search" />
-                </div> -->
                 <img src="images/guest-user-250x250.jpg" alt="">
             </div>
         </div>
         <section class="wrapper">
             <h1>Feedbacks</h1>
-            <div class="feedback">
-                <h2>Shamsudheen</h2>
-                <p>01/03/2024</p>
-                <div class="reply">
-                    <p class="fb">Lorem ipsum dolor sit amet consectetur adipisicing iure praesentium ex consequatur sunt voluptate soluta error explicabo ipsum ipsam dolorum quod. Nulla quam quo magni perferendis sint, temporibus ducimus quae saepe culpa eos repellat mollitia aspernatur harum consectetur itaque tempore numquam reiciendis.</p>
-                    <a href="" class="button">Reply</a>
-                </div>
-            </div>
-            <div class="feedback">
-                <h2>Althaf</h2>
-                <p>10/05/2024</p>
-                <div class="reply">
-                    <p class="fb">Lorem ipsum dolor sit amet consectetur adipisicing iure praesentium ex consequatur sunt voluptate soluta error explicabo ipsum ipsam dolorum quod. Nulla quam quo magni perferendis sint, temporibus ducimus quae saepe culpa eos repellat mollitia aspernatur harum consectetur itaque tempore numquam reiciendis.</p>
-                    <a href="" class="button">Reply</a>
-                </div>
-            </div>
-            <div class="feedback">
-                <h2>Raashid</h2>
-                <p>11/04/2024</p>
-                <div class="reply">
-                    <p class="fb">Lorem ipsum dolor sit amet consectetur adipisicing iure praesentium ex consequatur sunt voluptate soluta error explicabo ipsum ipsam dolorum quod. Nulla quam quo magni perferendis sint, temporibus ducimus quae saepe culpa eos repellat mollitia aspernatur harum consectetur itaque tempore numquam reiciendis.</p>
-                    <a href="" class="button">Reply</a>
-                </div>
-            </div>
+            <?php
+                // Check if there are any feedback entries
+                if (mysqli_num_rows($result) > 0) {
+                    // Output data for each feedback entry
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<div class="feedback">';
+                        echo '<h2>' . htmlspecialchars($row['name']) . ' (' . htmlspecialchars($row['role']) . ')</h2>'; // Displaying the role
+                        echo '<p>' . htmlspecialchars(date('d/m/Y', strtotime($row['created_at']))) . '</p>';
+                        echo '<div class="reply">';
+                        echo '<p class="fb">' . htmlspecialchars($row['message']) . '</p>';
+                        // echo '<a href="" class="button">Reply</a>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<p>No feedback available.</p>';
+                }
+                ?>
+
         </section>
     </div>
 </body>
