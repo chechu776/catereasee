@@ -103,6 +103,7 @@ a.invoice-btn:active {
             <tr>
                 <th>ID</th>
                 <th>Booked CSP</th>
+                <th>Menu id</th>
                 <th>Date</th>
                 <th>Venue</th>
                 <th>Amount</th>
@@ -119,36 +120,44 @@ a.invoice-btn:active {
                     $csp_result = mysqli_query($dbconnect, $csp_query);
                     $csp_data = mysqli_fetch_assoc($csp_result);
                     $csp_name = htmlspecialchars($csp_data['csp_name']); // Get CSP name
-
+            
+                    // Fetch the menu_id for the current booking
+                    while ($booking_data = mysqli_fetch_assoc($booking_result)) {
+                        $menu_id = $booking_data['menu_id']; // Now this should be fetched without error
+                        // Rest of the code...
+                    }
+            
                     echo "<tr class='hover'>";
                     echo "<td>" . htmlspecialchars($booking_data['booking_id']) . "</td>";
                     echo "<td>" . $csp_name . "</td>";
+                    echo "<td>" . htmlspecialchars($booking_data['menu_id']) . "</td>";
                     echo "<td>" . htmlspecialchars($booking_data['event_date']) . "</td>";
                     echo "<td>" . htmlspecialchars($booking_data['venue']) . "</td>";
                     echo "<td>₹" . htmlspecialchars($booking_data['total_price']) . "</td>";
                     echo "<td>" . htmlspecialchars($booking_data['quantity']) . "</td>";
                     echo "<td>" . htmlspecialchars($booking_data['status']) . "</td>";
-
+            
                     echo "<td>";
                     echo "<div class='actions'>"; // Wrapping both buttons inside a flexbox container
-
+            
                     // Cancel booking option
                     echo "<form method='POST' action='cancel_booking.php' style='display:inline;'>
                             <input type='hidden' name='booking_id' value='" . htmlspecialchars($booking_data['booking_id']) . "'>
                             <button type='submit' name='cancel' onclick='return confirm(\"Are you sure you want to cancel this booking?\")'>Cancel</button>
                         </form>";
-
+            
                     // Check if the status is "Confirmed" (case-insensitive comparison)
                     if (strcasecmp($booking_data['status'], 'Confirmed') == 0) {
-                        echo " <a href='download_invoice.php?booking_id=" . htmlspecialchars($booking_data['booking_id']) . "' class='invoice-btn'>Invoice</a>";
+                        echo " <a href='download_invoice.php?booking_id=" . htmlspecialchars($booking_data['booking_id']) . "&menu_id=" . $menu_id . "' class='invoice-btn'>Invoice</a>";
                     }
-
+            
                     echo "</div>";
                     echo "</td>";
-
+            
                     echo "</tr>";
                 }
-            } else {
+            }
+             else {
                 echo "<tr><td colspan='8'>No bookings found.</td></tr>";
             }
             ?>

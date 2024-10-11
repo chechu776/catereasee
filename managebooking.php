@@ -92,6 +92,7 @@ $booking_result = mysqli_query($dbconnect, $booking_query);
                 <tr>
                     <th>ID</th>
                     <th>Username</th>
+                    <th>Menu id</th>
                     <th>Date</th>
                     <th>Venue</th>
                     <th>Amount</th>
@@ -111,6 +112,7 @@ $booking_result = mysqli_query($dbconnect, $booking_query);
                         echo "<tr class='hover'>";
                         echo "<td>" . htmlspecialchars($booking_data['booking_id']) . "</td>";
                         echo "<td>" . $username . "</td>";
+                        echo "<td>" . htmlspecialchars($booking_data['menu_id']) . "</td>";  // Added menu id column to the table header
                         echo "<td>" . htmlspecialchars($booking_data['event_date']) . "</td>";
                         echo "<td>" . htmlspecialchars($booking_data['venue']) . "</td>";
                         echo "<td>₹" . htmlspecialchars($booking_data['total_price']) . "</td>";

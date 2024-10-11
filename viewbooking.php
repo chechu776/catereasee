@@ -79,6 +79,7 @@ $booking_result = mysqli_query($dbconnect, $booking_query);
                     <th>ID</th>
                     <th>Username</th>
                     <th>Booked CSP</th>
+                    <th>Menu id</th>
                     <th>Date</th>
                     <th>Venue</th>
                     <th>Amount</th>
@@ -106,6 +107,7 @@ $booking_result = mysqli_query($dbconnect, $booking_query);
                         echo "<td>" . htmlspecialchars($booking_data['booking_id']) . "</td>";
                         echo "<td>" . $username . "</td>";
                         echo "<td>" . $csp_name . "</td>";
+                        echo "<td>" . htmlspecialchars($booking_data['menu_id']) . "</td>"; // Directly display the menu ID (no need for additional query)
                         echo "<td>" . htmlspecialchars($booking_data['event_date']) . "</td>";
                         echo "<td>" . htmlspecialchars($booking_data['venue']) . "</td>";
                         echo "<td>₹" . htmlspecialchars($booking_data['total_price']) . "</td>";

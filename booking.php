@@ -9,6 +9,7 @@ if (!$dbconnect) {
 
 // Check if csp_id and total_price are available
 $csp_id = isset($_GET['csp_id']) ? $_GET['csp_id'] : null;
+$menu_id = isset($_GET['menu_id']) ? $_GET['menu_id'] : null;
 $total_price = isset($_GET['total_price']) ? $_GET['total_price'] : 0;
 
 // Get user ID from session
@@ -23,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $event_date = mysqli_real_escape_string($dbconnect, $_POST['event_date']);
 
     // Insert the booking details into the database
-    $sql = "INSERT INTO bookings (csp_id, user_id, venue, event_date, total_price, advance_payment) VALUES ('$csp_id', '$user_id', '$venue', '$event_date', '$total_price', '$advance_payment')";
+    $sql = "INSERT INTO bookings (csp_id, user_id,menu_id venue, event_date, total_price, advance_payment) VALUES ('$csp_id', '$user_id','$menu_id', '$venue', '$event_date', '$total_price', '$advance_payment')";
     
     if (mysqli_query($dbconnect, $sql)) {
         // Optionally, redirect or show a success message
